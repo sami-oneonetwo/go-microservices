@@ -1,0 +1,24 @@
+# a very minimal declarative config file
+_format_version: "2.1"
+_transform: true
+
+plugins:
+- name: cors
+  config:
+    origins:
+    - http://localhost
+    methods:
+    - GET
+    - POST
+    headers:
+    - Accept
+    - Accept-Version
+    - Content-Length
+    - Content-MD5
+    - Content-Type
+    - Date
+    - X-Auth-Token
+    exposed_headers:
+    - X-Auth-Token
+    credentials: true
+    max_age: 3600

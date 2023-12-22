@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Microservice Architecture Sub/Pub</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #333333;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    h1 {
+      color: white;
+    }
+
+    #postButton {
+      margin-top: 20px;
+      color: #ffffff;
+    }
+
+    #subscriptionWidget {
+      background-color: #007bff;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    #subscription-messages {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <h1 class="mb-4">Publish New Message to Kafka</h1>
+        <button class="btn btn-primary" id="postButton">Submit Message</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add padding between containers -->
+  <div style="margin-top: 200px;"></div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div id="subscriptionWidget">
+          <h3 class="mt-0 mb-3">Received Message</h3>
+          <div id="subscription-messages"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and Axios (for making HTTP requests) -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+    document.getElementById('postButton').addEventListener('click', async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/publisher/message', {
+          // Add your POST data here if needed
+        });
+
+        // Handle the response as needed
+        console.log('Response:', response.data);
+      } catch (error) {
+        // Handle errors
+        console.error('Error:', error);
+      }
+    });
+  </script>
+
+  <script>
+    const socket = new WebSocket("ws://localhost:8000/subscriber");
+
+    socket.addEventListener("open", (event) => {
+        console.log("WebSocket connection opened:", event);
+        socket.send("Hello, server!");
+    });
+
+    socket.addEventListener("message", (event) => {
+        console.log("Received from server:", event.data);
+        const outputDiv = document.getElementById("subscription-messages");
+        outputDiv.innerHTML = `<p>${event.data}</p>`;
+    });
+
+    socket.addEventListener("close", (event) => {
+        console.log("WebSocket connection closed:", event);
+    });
+
+    socket.addEventListener("error", (event) => {
+        console.error("WebSocket connection error:", event);
+    });
+  </script>
+
+</body>
+</html>
