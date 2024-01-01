@@ -3,10 +3,14 @@ package connections
 import (
 	"fmt"
 	"net/http"
+	"sync"
 
 	"github.com/gorilla/websocket"
+)
 
-	"github.com/sami-oneonetwo/go-microservices/subscriber/messages"
+var (
+	connectionsMu sync.Mutex
+	connections   = make(map[*websocket.Conn]struct{})
 )
 
 var upgrader = websocket.Upgrader{
@@ -15,6 +19,35 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
+func Subscribe(conn *websocket.Conn) {
+	connectionsMu.Lock()
+	defer connectionsMu.Unlock()
+
+	connections[conn] = struct{}{}
+}
+
+func Unsubscribe(conn *websocket.Conn) {
+	connectionsMu.Lock()
+	defer connectionsMu.Unlock()
+
+	delete(connections, conn)
+}
+
+// Send message to websocket connections
+func SendMessage(message string) {
+	connectionsMu.Lock()
+	defer connectionsMu.Unlock()
+
+	fmt.Println("Pushing to web sockets")
+	for conn := range connections {
+		err := conn.WriteMessage(websocket.TextMessage, []byte(message))
+		if err != nil {
+			fmt.Println("Error during message writing:", err)
+		}
+	}
+}
+
+// Upgrade HTTP connection to websocket
 func Upgrade(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -22,11 +55,11 @@ func Upgrade(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	messages.Subscribe(conn)
+	Subscribe(conn)
 	fmt.Println("Web Socket connected")
 
 	defer func() {
-		messages.Unsubscribe(conn)
+		Unsubscribe(conn)
 		conn.Close()
 	}()
 

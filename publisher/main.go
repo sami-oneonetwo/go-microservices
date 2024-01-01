@@ -7,8 +7,8 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 
-	"github.com/sami-oneonetwo/go-microservices/publisher/kafka"
-	"github.com/sami-oneonetwo/go-microservices/publisher/messages"
+	"publisher/kafka"
+	"publisher/messages"
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	}
 
 	// Setup API routes
-	r.Post("/message", messages.PublishMessage(publisher))
+	r.Post("/", messages.PublishMessage(publisher))
 
 	http.ListenAndServe(":8888", r)
 }

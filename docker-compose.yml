@@ -3,13 +3,13 @@ services:
   frontend:
     image: golang:1.21
     networks:
-      - kong-api-gateway_kong-net
+      - api-gateway_kong-net
     restart: unless-stopped
     depends_on:
       - kafka
     volumes:
       - .:/app
-      - $GOPATH/pkg/mod:/go/pkg/mod
+      - go-mod:/go/pkg/mod
     working_dir: /app/frontend
     ports:
       - "8080:8080"
@@ -18,13 +18,13 @@ services:
   publisher:
     image: golang:1.21
     networks:
-      - kong-api-gateway_kong-net
+      - api-gateway_kong-net
     restart: unless-stopped
     depends_on:
       - kafka
     volumes:
       - .:/app
-      - $GOPATH/pkg/mod:/go/pkg/mod
+      - go-mod:/go/pkg/mod
     working_dir: /app/publisher
     ports:
       - "8888:8888"
@@ -33,13 +33,13 @@ services:
   subscriber:
     image: golang:1.21
     networks:
-      - kong-api-gateway_kong-net
+      - api-gateway_kong-net
     restart: unless-stopped
     depends_on:
       - kafka
     volumes:
       - .:/app
-      - $GOPATH/pkg/mod:/go/pkg/mod
+      - go-mod:/go/pkg/mod
     working_dir: /app/subscriber
     ports:
       - "8889:8889"
@@ -48,7 +48,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.1
     networks:
-      - kong-api-gateway_kong-net
+      - api-gateway_kong-net
     restart: unless-stopped
     logging:
       driver: none
@@ -58,7 +58,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:7.3.1
     networks:
-      - kong-api-gateway_kong-net
+      - api-gateway_kong-net
     restart: unless-stopped
     depends_on:
       - zookeeper
@@ -71,6 +71,9 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 
 networks:
-  kong-api-gateway_kong-net:
+  api-gateway_kong-net:
     external: true
     driver: bridge
+
+volumes:
+  go-mod:

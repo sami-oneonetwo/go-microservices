@@ -5,15 +5,16 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/sami-oneonetwo/go-microservices/subscriber/connections"
-	"github.com/sami-oneonetwo/go-microservices/subscriber/kafka"
-	"github.com/sami-oneonetwo/go-microservices/subscriber/messages"
+	"subscriber/connections"
+	"subscriber/kafka"
 )
 
 func main() {
 	fmt.Println("Setting up server in 8889")
 	http.HandleFunc("/", connections.Upgrade)
+
 	ctx := context.Background()
-	go kafka.Listen(ctx, messages.SendMessage)
+	go kafka.Listen(ctx, connections.SendMessage)
+
 	http.ListenAndServe(":8889", nil)
 }

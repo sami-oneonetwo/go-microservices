@@ -1,4 +1,4 @@
-module github.com/sami-oneonetwo/go-microservices/subscriber
+module subscriber
 
 go 1.21.3
 

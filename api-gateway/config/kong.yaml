@@ -1,6 +1,34 @@
-# a very minimal declarative config file
-_format_version: "2.1"
+_format_version: "3.0"
 _transform: true
+
+services:
+- name: publisher
+  url: http://publisher:8888
+  plugins:
+  - name: cors
+    routes:
+      - publish
+  routes:
+  - name: publish
+    paths:
+    - "/publisher"
+    methods:
+    - POST
+- name: subscriber
+  url: http://subscriber:8889
+  paths: 
+    - "/subscriber"
+  plugins:
+  - name: cors
+    routes:
+      - subscriber
+  routes:
+  - name: subscriber
+    paths:
+    - "/subscriber"
+    methods:
+    - GET
+    - OPTIONS
 
 plugins:
 - name: cors
@@ -22,3 +50,4 @@ plugins:
     - X-Auth-Token
     credentials: true
     max_age: 3600
+    preflight_continue: false
