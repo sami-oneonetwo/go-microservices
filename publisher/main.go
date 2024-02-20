@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -12,6 +14,8 @@ import (
 )
 
 func main() {
+
+	fmt.Println("Setting up publisher service")
 
 	// Init router
 	r := chi.NewRouter()
@@ -35,5 +39,5 @@ func main() {
 	// Setup API routes
 	r.Post("/", messages.PublishMessage(publisher))
 
-	http.ListenAndServe(":8888", r)
+	http.ListenAndServe(":"+os.Getenv("PUBLISHER_PORT"), r)
 }

@@ -1,36 +1,26 @@
 # go-microservices
 
-This repository contains three microservices, a front end for user interaction with the backend services, a publisher service with an api used to push messages to Kafka, and a subscription service that subscribes to Kafka and feeds the messages back to the front end through a websocket.
+This repository contains three microservices, a front end for user interaction with the backend services, a publisher service with an api used to push messages to Kafka, and a subscription service that subscribes to Kafka and feeds the messages back to the front end through a websocket. Communication to the subscriber and publisher services is routed through a Kong API Gateway and messages are streamed to the frontend through a websocket.
 
-The purpose of this is purely for learning so the code is in no way optimised or even close to production ready. 
-
-With this I've explored pub/sub architecture with Kafka, routing through an API gateway with Kong, Websockets, and the Go language. 
+The purpose of this is purely for learning, so the code is in no way optimised or even close to production ready. 
 
 ## Design
 
 [Architectural Diagram](./.diagram.jpeg)
 
+## Configuration
+
+Copy the `.env.example` file to `.env` and set relevant values.
+
+Note: The config/kong.yaml configuration still uses hardcoded port numbers to setup each service's route. 
+
 ## Installation
 
-### API Gateway
-
-Install the API gateway:
-
-```
-cd api-gateway
-docker-compose up -d
-```
-
-Configure the services and routes in the kong api gateway at http://localhost:8000
-
-### Go Microservices
-
-Install the microservices:
+Start the API Gateway, Kafka, and microservices with docker-compose:
 
 ```
 docker-compose up -d
 ```
-
 
 ## Limitations
 

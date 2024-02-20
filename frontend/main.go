@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -12,6 +13,9 @@ import (
 )
 
 func main() {
+
+	fmt.Println("Setting up frontend service")
+
 	// Init router
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -21,5 +25,5 @@ func main() {
 	filesDir := http.Dir(filepath.Join(workDir, "public"))
 	fileserver.Serve(r, "/", filesDir)
 
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(":"+os.Getenv("FRONTEND_PORT"), r)
 }

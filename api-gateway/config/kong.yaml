@@ -6,8 +6,8 @@ services:
   url: http://publisher:8888
   plugins:
   - name: cors
-    routes:
-      - publish
+    # routes:
+      # - publish
   routes:
   - name: publish
     paths:
@@ -16,12 +16,12 @@ services:
     - POST
 - name: subscriber
   url: http://subscriber:8889
-  paths: 
-    - "/subscriber"
+  # paths: 
+    # - "/subscriber"
   plugins:
   - name: cors
-    routes:
-      - subscriber
+    # routes:
+      # - subscriber
   routes:
   - name: subscriber
     paths:
