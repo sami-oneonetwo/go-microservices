@@ -1,21 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-
-	"github.com/sami-oneonetwo/go-microservices/frontend/fileserver"
+	// "github.com/sami-oneonetwo/go-microservices/frontend/fileserver"
 )
 
 func main() {
-
-	fmt.Println("Setting up frontend service")
-
 	// Init router
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -25,5 +20,5 @@ func main() {
 	filesDir := http.Dir(filepath.Join(workDir, "public"))
 	fileserver.Serve(r, "/", filesDir)
 
-	http.ListenAndServe(":"+os.Getenv("FRONTEND_PORT"), r)
+	http.ListenAndServe(":8080", r)
 }
