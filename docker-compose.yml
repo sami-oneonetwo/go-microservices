@@ -34,8 +34,8 @@ services:
       - .:/app
       - go-mod:/go/pkg/mod
     working_dir: /app/publisher
-    ports:
-      - "${PUBLISHER_PORT:-8888}:${PUBLISHER_PORT:-8888}"
+    # ports:
+    #   - "${PUBLISHER_PORT:-8888}:${PUBLISHER_PORT:-8888}"
     command: go run .
 
   subscriber:
@@ -51,8 +51,8 @@ services:
       - .:/app
       - go-mod:/go/pkg/mod
     working_dir: /app/subscriber
-    ports:
-      - "${SUBSCRIBER_PORT:-8889}:${SUBSCRIBER_PORT:-8889}"
+    # ports:
+    #   - "${SUBSCRIBER_PORT:-8889}:${SUBSCRIBER_PORT:-8889}"
     command: go run .
 
   #################
@@ -104,7 +104,7 @@ services:
       - kong-net
     restart: unless-stopped
     depends_on:
-      - kong    
+      - kong
     logging:
       driver: none
     environment:
@@ -125,8 +125,21 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
 
+  ###################
+  ## Debugging     ##
+  ###################
+  busybox:
+    image: busybox
+    networks:
+      - kong-net
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    command: tail -f /dev/null
+
 networks:
   kong-net:
+    external: false
 
 volumes:
   go-mod:

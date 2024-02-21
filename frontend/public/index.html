@@ -70,7 +70,8 @@
   <script>
     document.getElementById('postButton').addEventListener('click', async () => {
       try {
-        const response = await axios.post('http://localhost:8000/publisher/message', {
+        // const response = await axios.post('http://localhost:8888/message', {
+        const response = await axios.post('http://localhost:8000/publisher', {
           // Add your POST data here if needed
         });
 
@@ -84,6 +85,7 @@
   </script>
 
   <script>
+    // const socket = new WebSocket("ws://localhost:8889");
     const socket = new WebSocket("ws://localhost:8000/subscriber");
 
     socket.addEventListener("open", (event) => {

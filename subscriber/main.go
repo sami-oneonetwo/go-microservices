@@ -17,5 +17,5 @@ func main() {
 	ctx := context.Background()
 	go kafka.Listen(ctx, connections.SendMessage)
 
-	http.ListenAndServe(":"+os.Getenv("SUBSCRIBER_PORT"), nil)
+	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }

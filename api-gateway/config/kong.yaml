@@ -4,6 +4,7 @@ _transform: true
 services:
 - name: publisher
   url: http://publisher:8888
+  # path: /
   plugins:
   - name: cors
     # routes:
@@ -14,10 +15,11 @@ services:
     - "/publisher"
     methods:
     - POST
+    # hosts: 
+    #   - publisher:8888
 - name: subscriber
   url: http://subscriber:8889
-  # paths: 
-    # - "/subscriber"
+  # path: "/subscriber"
   plugins:
   - name: cors
     # routes:
