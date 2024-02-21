@@ -2,35 +2,30 @@ _format_version: "3.0"
 _transform: true
 
 services:
-- name: publisher
-  url: http://publisher:8888
-  # path: /
-  plugins:
-  - name: cors
-    # routes:
-      # - publish
-  routes:
-  - name: publish
-    paths:
-    - "/publisher"
-    methods:
-    - POST
-    # hosts: 
-    #   - publisher:8888
-- name: subscriber
-  url: http://subscriber:8889
-  # path: "/subscriber"
-  plugins:
-  - name: cors
-    # routes:
-      # - subscriber
-  routes:
+  - name: publisher
+    url: http://publisher:8888
+    routes:
+      - name: publish
+        paths:
+          - "/publisher"
+        methods:
+          - POST
+    plugins:
+      - name: cors
+        route: publish
+
   - name: subscriber
-    paths:
-    - "/subscriber"
-    methods:
-    - GET
-    - OPTIONS
+    url: http://subscriber:8889
+    routes:
+      - name: subscriber
+        paths:
+          - "/subscriber"
+        methods:
+          - GET
+          - OPTIONS
+    plugins:
+      - name: cors
+        route: subscriber
 
 plugins:
 - name: cors
@@ -40,6 +35,7 @@ plugins:
     methods:
     - GET
     - POST
+    - OPTIONS
     headers:
     - Accept
     - Accept-Version
