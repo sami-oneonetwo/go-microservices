@@ -1,4 +1,4 @@
-module github.com/sami-oneonetwo/go-microservices/publisher
+module publisher
 
 go 1.21.3
 
