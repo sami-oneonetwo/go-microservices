@@ -49,6 +49,12 @@ func SendMessage(message string) {
 
 // Upgrade HTTP connection to websocket
 func Upgrade(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Println("Error during connection upgradation:", err)

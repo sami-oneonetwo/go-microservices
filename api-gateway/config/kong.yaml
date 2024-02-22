@@ -10,9 +10,7 @@ services:
           - "/publisher"
         methods:
           - POST
-    plugins:
-      - name: cors
-        route: publish
+          - OPTIONS
 
   - name: subscriber
     url: http://subscriber:8889
@@ -22,30 +20,26 @@ services:
           - "/subscriber"
         methods:
           - GET
-          - OPTIONS
-    plugins:
-      - name: cors
-        route: subscriber
 
 plugins:
 - name: cors
   config:
     origins:
-    - http://localhost
+      - "*"
     methods:
-    - GET
-    - POST
-    - OPTIONS
+      - GET
+      - POST
+      - OPTIONS
     headers:
-    - Accept
-    - Accept-Version
-    - Content-Length
-    - Content-MD5
-    - Content-Type
-    - Date
-    - X-Auth-Token
+      - Accept
+      - Accept-Version
+      - Content-Length
+      - Content-MD5
+      - Content-Type
+      - Date
+      - X-Auth-Token
     exposed_headers:
-    - X-Auth-Token
+      - X-Auth-Token
     credentials: true
     max_age: 3600
     preflight_continue: false
