@@ -1,8 +1,10 @@
 # go-microservices
 
-This repository contains three microservices, a front end for user interaction with the backend services, a publisher service with an api used to push messages to Kafka, and a subscription service that subscribes to Kafka and feeds the messages back to the front end through a websocket. Communication to the subscriber and publisher services is routed through a Kong API Gateway and messages are streamed to the frontend through a websocket.
+This repository contains three microservices, a front end for user interaction with the backend services, a publisher service with an api used to push messages to Kafka, and a subscription service that subscribes to Kafka and feeds the messages back to the front end through a websocket. There is also a name generator service that provides randomly generated names.
 
-The purpose of this is purely for learning, so the code is in no way optimised or even close to production ready. 
+Communication to the backend services is routed through a Kong API Gateway and messages are either streamed to the frontend through a websocket or called to via REST API.
+
+The purpose of this is purely for learning, so the code is in no way optimised or even close to production ready.
 
 ## Design
 
