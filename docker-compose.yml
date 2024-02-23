@@ -55,6 +55,23 @@ services:
       - "${SUBSCRIBER_PORT:-8889}:${SUBSCRIBER_PORT:-8889}"
     command: go run .
 
+  namer:
+    image: golang:1.21
+    environment:
+      PORT: ${NAMER_PORT:-8890}
+    networks:
+      - kong-net
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    volumes:
+      - .:/app
+      - go-mod:/go/pkg/mod
+    working_dir: /app/namer
+    ports:
+      - "${NAMER_PORT:-8890}:${NAMER_PORT:-8890}"
+    command: go run .    
+
   #################
   ## API Gateway ##
   #################
