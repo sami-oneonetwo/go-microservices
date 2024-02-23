@@ -80,6 +80,7 @@ services:
       POSTGRES_USER: citizix_user
       POSTGRES_DB: citizix_db
       POSTGRES_PORT: 5432
+      POSTGRES_HIST: postgres
     networks:
       - kong-net
     restart: unless-stopped
@@ -96,7 +97,9 @@ services:
   postgres:
     image: postgres:14-alpine
     depends_on:
-      - kafka    
+      - kafka
+    networks:
+      - kong-net      
     ports:
       - 5432:5432
     volumes:

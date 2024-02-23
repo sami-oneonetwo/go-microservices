@@ -67,8 +67,11 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	var password = os.Getenv("POSTGRES_PASSWORD")
 	var username = os.Getenv("POSTGRES_USER")
 	var database = os.Getenv("POSTGRES_DB")
+	// var port = os.Getenv("POSTGRES_PORT")
+	// var host = os.Getenv("POSTGRES_HOST")
 
-	var url = "postgres://" + username + ":" + password + "@postgres/" + database
+	var url = "postgres://" + username + ":" + password + "@postgres/" + database + "?sslmode=disable"
+	// var url = "postgres://" + username + ":" + password + "@" + host + ":" + port + "/" + database + "?sslmode=disable"
 	conn, err := pgx.Connect(context.Background(), url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
