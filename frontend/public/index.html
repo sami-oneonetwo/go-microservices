@@ -69,6 +69,35 @@
     </div>
   </div>
 
+
+  <div style="margin-top: 200px;"></div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+
+      <div class="col-md-12">
+        <div class="widget">
+          <h3 class="mt-0 mb-3">User Auth</h3>
+
+          <form id="userForm" onsubmit="event.preventDefault();">
+
+            <label for="username">Username</label>
+            <input id="username" type="text">
+            
+            <label for="email">Email</label>
+            <input id="email" type="text">
+
+            <label for="password">Password</label>
+            <input id="password" type="password">
+
+            <button>Register</button>
+          </form>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+
   <!-- Bootstrap JS and Axios (for making HTTP requests) -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -86,6 +115,29 @@
       }
     });
   </script>
+
+
+<!-- User Registration -->
+  <script>
+    async function registerUser() {
+
+      let username = document.getElementById("username").value;
+      let password = document.getElementById("password").value;
+
+      const response = await axios.post('http://localhost:8000/users/register',  {
+          'Content-Type': 'application/json'
+        }, {
+        username: username,
+        password: password
+      });
+
+      console.log(response);
+    }
+
+    var userForm = document.getElementById("userForm");
+    userForm.addEventListener("submit", registerUser);    
+  </script>
+
 
   <script>
     const socket = new WebSocket("ws://localhost:8000/subscriber");

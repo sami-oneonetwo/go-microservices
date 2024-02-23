@@ -70,7 +70,42 @@ services:
     working_dir: /app/namer
     ports:
       - "${NAMER_PORT:-8890}:${NAMER_PORT:-8890}"
+    command: go run .
+
+  users:
+    image: golang:1.21
+    environment:
+      PORT: ${USERS_PORT:-8891}
+      POSTGRES_PASSWORD: S3cret
+      POSTGRES_USER: citizix_user
+      POSTGRES_DB: citizix_db
+      POSTGRES_PORT: 5432
+    networks:
+      - kong-net
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+      - go-mod:/go/pkg/mod
+    working_dir: /app/users
+    ports:
+      - "${USERS_PORT:-8891}:${USERS_PORT:-8891}"
     command: go run .    
+
+  postgres:
+    image: postgres:14-alpine
+    depends_on:
+      - kafka    
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=S3cret
+      - POSTGRES_USER=citizix_user
+      - POSTGRES_DB=citizix_db
+
 
   #################
   ## API Gateway ##

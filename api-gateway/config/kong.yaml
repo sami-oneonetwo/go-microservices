@@ -30,6 +30,17 @@ services:
         methods:
           - GET
 
+  - name: users
+    url: http://users:8891
+    routes:
+      - name: users
+        paths:
+          - "/users"
+        methods:
+          - GET
+          - POST
+          - OPTIONS
+
 plugins:
 - name: cors
   config:
