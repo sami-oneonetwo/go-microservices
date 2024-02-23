@@ -64,8 +64,12 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// urlExample := "postgres://username:password@localhost:5432/database_name"
-	conn, err := pgx.Connect(context.Background(), "postgres")
+	var password = os.Getenv("POSTGRES_PASSWORD")
+	var username = os.Getenv("POSTGRES_USER")
+	var database = os.Getenv("POSTGRES_DB")
+
+	var url = "postgres://" + username + ":" + password + "@postgres/" + database
+	conn, err := pgx.Connect(context.Background(), url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
