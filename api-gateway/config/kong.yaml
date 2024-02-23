@@ -21,6 +21,15 @@ services:
         methods:
           - GET
 
+  - name: namer
+    url: http://namer:8890
+    routes:
+      - name: namer
+        paths:
+          - "/namer"
+        methods:
+          - GET
+
 plugins:
 - name: cors
   config:

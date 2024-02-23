@@ -24,8 +24,8 @@
       color: #ffffff;
     }
 
-    #subscriptionWidget {
-      background-color: #007bff;
+    .widget {
+      background-color: #767d85;
       color: #ffffff;
       padding: 15px;
       border-radius: 8px;
@@ -52,10 +52,18 @@
 
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div id="subscriptionWidget">
-          <h3 class="mt-0 mb-3">Received Message</h3>
+
+      <div class="col-md-4">
+        <div class="widget">
+          <h3 class="mt-0 mb-3">Kafka Streaming Service</h3>
           <div id="subscription-messages"></div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="widget">
+          <h3 class="mt-0 mb-3">Name Generator Service</h3>
+          <div id="namer-messages"></div>
         </div>
       </div>
     </div>
@@ -70,22 +78,16 @@
   <script>
     document.getElementById('postButton').addEventListener('click', async () => {
       try {
-        // const response = await axios.post('http://localhost:8888/message', {
-        const response = await axios.post('http://localhost:8000/publisher', {
-          // Add your POST data here if needed
-        });
+        const response = await axios.post('http://localhost:8000/publisher', {});
 
-        // Handle the response as needed
         console.log('Response:', response.data);
       } catch (error) {
-        // Handle errors
         console.error('Error:', error);
       }
     });
   </script>
 
   <script>
-    // const socket = new WebSocket("ws://localhost:8889");
     const socket = new WebSocket("ws://localhost:8000/subscriber");
 
     socket.addEventListener("open", (event) => {
@@ -106,6 +108,19 @@
     socket.addEventListener("error", (event) => {
         console.error("WebSocket connection error:", event);
     });
+  </script>
+
+  <script>
+    (async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/namer', {});
+
+        const outputDiv = document.getElementById("namer-messages");
+        outputDiv.innerHTML = `<p>${response.data}</p>`;
+      } catch (error) {
+        console.error('Error during API call:', error);
+      }
+    })();
   </script>
 
 </body>
