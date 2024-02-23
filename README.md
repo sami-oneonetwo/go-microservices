@@ -24,7 +24,7 @@ Start the API Gateway, Kafka, and microservices with docker-compose:
 docker-compose up -d
 ```
 
-Navigate to [localhost:8080](https://localhost:8080) to view the front-end.
+Navigate to [localhost:8080](http://localhost:8080) to view the front-end.
 
 ## Limitations
 
