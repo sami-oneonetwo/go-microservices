@@ -24,6 +24,8 @@ Start the API Gateway, Kafka, and microservices with docker-compose:
 docker-compose up -d
 ```
 
+Navigate to [http://localhost:8080](localhost:8080) to view the front-end.
+
 ## Limitations
 
 - One websocket client at a time. A map should be created and messages pushed to all clients.
